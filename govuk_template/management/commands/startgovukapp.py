@@ -6,8 +6,6 @@ import shutil
 from django.core.management import CommandError
 from django.core.management.commands.startapp import Command as StartAppCommand
 
-from govuk_template.versions import Range
-
 
 class Command(StartAppCommand):
     help = 'Creates an app that can be used as a basis for GOV.UK-styled apps ' \
