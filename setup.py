@@ -5,8 +5,8 @@ import warnings
 
 from setuptools import find_packages, setup
 
-if sys.version_info[0:2] < (3, 6):
-    warnings.warn('This package will only run on Python version 3.6+')
+if sys.version_info[0:2] < (3, 5):
+    warnings.warn('This package will only run on Python version 3.5+')
 
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
@@ -42,6 +42,7 @@ setup(
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
     ],
     setup_requires=setup_requires,

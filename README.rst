@@ -2,11 +2,12 @@ Django GOV.UK Template
 ======================
 
 It should be easy to make a Django-based service that follows Government Digital Services’ style guide and reference materials.
-https://pypi.python.org/pypi/govuk-template is not kept updated and is not readily usable in Django.
+But https://pypi.python.org/pypi/govuk-template is not kept updated and is not readily usable in Django and
 https://github.com/alphagov/govuk_template cannot be installed directly into a Django project without complex build steps.
 
-This package takes pieces published by GDS and creates an app in a Django project which can then be used as normal.
-This process downloads a release from https://github.com/alphagov/govuk_template
+This package takes components published by GDS and creates an app in a Django project which can then be used as normal.
+This process downloads a release from https://github.com/alphagov/govuk_template and the contents of Node.js packages
+https://www.npmjs.com/package/govuk-elements-sass and https://www.npmjs.com/package/govuk_frontend_toolkit
 
 Usage
 -----
