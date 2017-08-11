@@ -19,6 +19,7 @@ setup_requires = ['setuptools', 'pip', 'wheel']
 install_requires = ['django>=1.11']
 extras_require = {
     'forms': ['django-govuk-forms'],
+    'scss': ['libsass'],
 }
 tests_require = ['flake8']
 
@@ -30,7 +31,8 @@ setup(
     packages=find_packages(exclude=['demo', 'tests']),
     include_package_data=True,
     license='MIT',
-    description='Django app that loads latest components from the Government Digital Services style guide',
+    description='Django app that builds `template` and `elements` components from '
+                'the Government Digital Services style guide',
     long_description=README,
     keywords='django,govuk,template,elements,frontend,toolkit',
     classifiers=[

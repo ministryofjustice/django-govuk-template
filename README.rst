@@ -17,6 +17,12 @@ Usage
     - Add this app to ``INSTALLED_APPS``
     - Ensure that this app is included in source control as the intention is that it’s only rebuilt as needed
     - If an update is needed in the future, delete the app created in previous step and run this command again
+- Add ``govuk_template_base.context_processors.govuk_template_base`` to the template context processors
+
+See the demo folder in this repository on `GitHub`_, it is not included in distributions.
+
+Additionally, add ``django-govuk-forms`` to your project to output Django forms styled using GOV.UK elements.
+You can install this package automatically by adding ``django-govuk-template[forms]`` to your requirements file.
 
 Development
 -----------
@@ -27,12 +33,15 @@ Use ``python setup.py test`` to run all tests.
 
 This repository does not need to be updated for every release of GDS’s packages, only breaking changes for overridden components may need fixes.
 
-Distribute a new version by updating the ``VERSION`` tuple in ``govuk_django_template`` and run ``python setup.py sdist bdist_wheel upload``.
+Distribute a new version by updating the ``VERSION`` tuple in ``govuk_template_base`` and run ``python setup.py sdist bdist_wheel upload``.
 
 To do
 -----
 
 - It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
+- Should the template be created in the root or in under generated app name (as now)?
+- Should CSS generated (currently base.css) from GOV.UK elements be named differently?
+- Add browser-sync / watchdog components for easier local development using testserver
 
 Copyright
 ---------
