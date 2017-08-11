@@ -41,7 +41,7 @@ class Command(StartAppCommand):
         govuk_template_version = options.pop('govuk_template_version')
         govuk_elements_version = options.pop('govuk_elements_version')
 
-        options['template'] = str(Path(__file__).parent / 'govuk_base_template')
+        options['template'] = str(Path(__file__).parent / 'govuk_template_base')
         super().handle(**options)
 
         app_dir = Path(target) / app_name
@@ -50,7 +50,7 @@ class Command(StartAppCommand):
         templates_dir = app_dir / 'templates' / app_name
 
         self.load_govuk_template(govuk_template_version, static_dir, templates_dir)
-        self.load_govuk_elements(govuk_elements_version, static_dir, static_source_dir)
+        # self.load_govuk_elements(govuk_elements_version, static_dir, static_source_dir)
 
         if self.verbosity >= 1:
             self.stdout.write('Created GOV.UK base app, add `%s` to INSTALLED_APPS' % options['name'])

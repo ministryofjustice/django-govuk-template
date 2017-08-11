@@ -4,4 +4,4 @@ from django.utils.translation import gettext_lazy as _
 
 class {{ camel_case_app_name }}Config(AppConfig):
     name = '{{ app_name }}'
-    verbose_name = _('GOV.UK Base Template')
+    verbose_name = _('GOV.UK Template')

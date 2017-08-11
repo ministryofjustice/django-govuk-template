@@ -24,7 +24,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'govuk_template',
+    'govuk_template_base',
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

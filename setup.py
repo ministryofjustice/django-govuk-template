@@ -11,23 +11,22 @@ if sys.version_info[0:2] < (3, 6):
 # allow setup.py to be run from any path
 os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
-package_info = importlib.import_module('govuk_template')
+package_info = importlib.import_module('govuk_template_base')
 with open('README.rst') as readme:
     README = readme.read()
 
 setup_requires = ['setuptools', 'pip', 'wheel']
 install_requires = ['django>=1.11']
 extras_require = {
-    'forms': ['govuk-django-forms'],
-    'scss': ['libsass'],
+    'forms': ['django-govuk-forms'],
 }
 tests_require = ['flake8']
 
 setup(
-    name='govuk-django-template',
+    name='django-govuk-template',
     version=package_info.__version__,
     author=package_info.__author__,
-    url='https://github.com/ministryofjustice/govuk-django-template',
+    url='https://github.com/ministryofjustice/django-govuk-template',
     packages=find_packages(exclude=['demo', 'tests']),
     include_package_data=True,
     license='MIT',
