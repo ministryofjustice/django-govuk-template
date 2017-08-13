@@ -1,6 +1,7 @@
 include LICENSE.txt
 include README.rst
 recursive-include govuk_template_base *.po
+recursive-include govuk_template_base *.mo
 recursive-include govuk_template_base/management/commands/govuk_template_base *.py-tpl
 recursive-include govuk_template_base/management/commands/govuk_template_base *.scss
 recursive-include govuk_template_base/management/commands/govuk_template_base *.html

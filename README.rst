@@ -34,7 +34,9 @@ Use ``python setup.py test`` to run all tests.
 
 This repository does not need to be updated for every release of GDS’s packages, only breaking changes for overridden components may need fixes.
 
-Distribute a new version by updating the ``VERSION`` tuple in ``govuk_template_base`` and run ``python setup.py sdist bdist_wheel upload``.
+If any localisable strings change, run ``python setup.py makemessages compilemessages``.
+
+Distribute a new version by updating the ``VERSION`` tuple in ``govuk_template_base`` and run ``python setup.py compilemessages sdist bdist_wheel upload``.
 
 To do
 -----
