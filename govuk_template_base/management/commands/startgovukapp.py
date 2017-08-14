@@ -85,7 +85,15 @@ class Command(StartAppCommand):
         self.copy_dir(temporary_folder / 'govuk_template' / 'static', static_dir)
         self.copy_dir(temporary_folder / 'govuk_template' / 'templates' / 'govuk_template', templates_dir)
 
-        # TODO: replace {% load staticfiles %} with {% load static %}
+        self.fix_templates(templates_dir)
+
+    def fix_templates(self, templates_dir: Path):
+        for path in templates_dir.rglob('*.html'):
+            with path.open('rt') as f:
+                text = f.read()
+            text = text.replace('{% load staticfiles %}', '{% load static %}')
+            with path.open('wt') as f:
+                f.write(text)
 
     def load_govuk_elements(self, elements_version, frontend_toolkit_version, scss_dir: Path):
         self.debug_message('Loading `govuk-elements-sass` package listing')
