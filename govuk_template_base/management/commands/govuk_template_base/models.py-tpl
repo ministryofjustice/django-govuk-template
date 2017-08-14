@@ -1,3 +1,0 @@
-{{ unicode_literals }}from django.db import models
-
-# TODO: create models that allow django admin to simply control some interface elements, such as phase banner
