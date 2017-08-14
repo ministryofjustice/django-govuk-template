@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block head %}
+  {{ block.super }}
+  <link href="{% static 'stylesheets/base.css' %}" media="screen" rel="stylesheet" />
+{% endblock %}
+
+{% block cookie_message %}
+  <p>
+    {% trans 'GOV.UK uses cookies to make the site simpler.' %}
+    <a href="https://www.gov.uk/help/cookies">
+      {% trans 'Find out more about cookies' %}
+    </a>
+  </p>
+{% endblock %}

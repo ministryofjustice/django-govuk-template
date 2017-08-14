@@ -53,7 +53,7 @@ class Command(StartAppCommand):
         super().handle(**options)
 
         app_dir = Path(target) / app_name
-        templates_dir = app_dir / 'templates' / app_name
+        templates_dir = app_dir / 'templates'
         # static assets all have absolute paths so cannot include app_name
         static_dir = app_dir / 'static'
         images_dir = static_dir / 'images'
