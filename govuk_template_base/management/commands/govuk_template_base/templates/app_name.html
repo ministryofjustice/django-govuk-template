@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load static %}
+{% load govuk_template_base %}
 
 {% block head %}
   {{ block.super }}
@@ -14,4 +15,67 @@
       {% trans 'Find out more about cookies' %}
     </a>
   </p>
+{% endblock %}
+
+{% block header_class %}with-proposition{% endblock %}
+{% block proposition_header %}
+  {% get_service_settings as service_settings %}
+  <div class="header-proposition">
+    <div class="content">
+      {% if service_settings.has_header_links %}
+        <a href="#proposition-links" class="js-header-toggle menu">{% trans 'Menu' %}</a>
+      {% endif %}
+      <nav id="proposition-menu">
+        <a href="{{ service_settings.header_link_url|default:'/' }}" id="proposition-name">
+          {% block proposition %}{{ service_settings.localised_name }}{% endblock %}
+        </a>
+        {% block proposition_menu %}
+          {% if service_settings.has_header_links %}
+            <ul id="proposition-links">
+              {% for link in service_settings.header_links.all %}
+                <li><a href="{{ link.url }}" class="{% if link.view_name == request.resolver_match.view_name %}active{% endif %}">{{ link.localised_name }}</a></li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endblock %}
+      </nav>
+    </div>
+  </div>
+{% endblock %}
+
+{% block content %}
+  <main role="main" id="content" tabindex="-1">
+    {% block phase_banner %}
+      {% get_service_settings as service_settings %}
+      {% if service_settings.phase != 'live' %}
+        <div class="phase-banner">
+          <p>
+            <strong class="phase-tag">{{ service_settings.phase_name }}</strong>
+            <span>{% block phase_banner_message %}{% trans 'This is a new service.' %}{% endblock %}</span>
+          </p>
+        </div>
+      {% endif %}
+    {% endblock %}
+
+    {% block inner_content %}{% endblock %}
+  </main>
+{% endblock %}
+
+{% block licence_message %}
+  <p>
+    {% blocktrans trimmed with url='https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/' %}
+      All content is available under the <a href="{{ url }}" rel="license">Open Government Licence v3.0</a>, except where otherwise stated
+    {% endblocktrans %}
+  </p>
+{% endblock %}
+
+{% block footer_support_links %}
+  {% get_service_settings as service_settings %}
+  {% if service_settings.has_footer_links %}
+    <ul>
+      {% for link in service_settings.footer_links.all %}
+        <li><a href="{{ link.url }}">{{ link.localised_name }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
 {% endblock %}

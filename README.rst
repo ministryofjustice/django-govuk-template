@@ -19,7 +19,7 @@ Usage
     - Ensure that this app is included in source control as the intention is that it’s only rebuilt as needed
     - If an update is needed in the future, delete the app created in previous step and run this command again
 - Add ``govuk_template_base.context_processors.govuk_template_base`` to the template context processors
-- Use ``[[app name, e.g. govuk_template]].html`` as the template to extend from
+- Use ``[[app name, e.g. govuk_template]].html`` as the template to extend from and overrive the ``inner_content`` block
 
 See the demo folder in this repository on `GitHub`_, it is not included in distributions.
 
