@@ -11,6 +11,10 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 LANGUAGE_CODE = 'en-gb'
+LANGUAGES = [
+    ('en-gb', 'English'),
+    ('cy', 'Cymraeg'),
+]
 TIME_ZONE = 'Europe/London'
 USE_I18N = True
 USE_L10N = True
@@ -42,6 +46,7 @@ INSTALLED_APPS += [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
