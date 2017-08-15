@@ -37,18 +37,22 @@ This repository does not need to be updated for every release of GDS’s package
 
 If any localisable strings change, run ``python setup.py makemessages compilemessages``.
 
-Distribute a new version by updating the ``VERSION`` tuple in ``govuk_template_base`` and run ``python setup.py compilemessages sdist bdist_wheel upload``.
+Distribute a new version to `PyPi`_ by updating the ``VERSION`` tuple in ``govuk_template_base`` and run ``python setup.py compilemessages sdist bdist_wheel upload``.
 
 To do
 -----
 
 - It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
 - Add browser-sync / watchdog components for easier local development using testserver
+- Include JavaScript components from ``govuk_frontend_toolkit``
+- Add additional GOV.UK patterns
+    - Previous/next pagination
+    - Page lists
 
 Copyright
 ---------
 
-Copyright |copy| 2017 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
+Copyright © 2017 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
 
-.. |copy| unicode:: 0xA9 .. copyright symbol
 .. _GitHub: https://github.com/ministryofjustice/django-govuk-template
+.. _PyPi: https://pypi.org/project/django-govuk-template/
