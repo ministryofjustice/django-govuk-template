@@ -39,6 +39,15 @@ if os.path.isdir(os.path.join(BASE_DIR, 'govuk_template')):
         # simulating inclusion once `startgovukapp` is called
         'govuk_template',
     ]
+try:
+    import govuk_forms
+
+    INSTALLED_APPS += [
+        # include forms if extra was installed
+        'govuk_forms',
+    ]
+except ImportError:
+    govuk_forms = None
 INSTALLED_APPS += [
     # this demo (not included in distribution)
     'demo_service',

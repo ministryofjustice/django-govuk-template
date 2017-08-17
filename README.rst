@@ -42,6 +42,7 @@ Distribute a new version to `PyPi`_ by updating the ``VERSION`` tuple in ``govuk
 To do
 -----
 
+- Improve SCSS building mechanism and add print CSS
 - It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
 - Add browser-sync / watchdog components for easier local development using testserver
 - Include JavaScript components from ``govuk_frontend_toolkit``
