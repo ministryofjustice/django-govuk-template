@@ -30,6 +30,10 @@
 a.govuk-page-list__current-page {
   color: $text-colour;
   text-decoration: none;
+
+  &:focus {
+    color: $text-colour;
+  }
 }
 
 // next/previous page links
