@@ -47,8 +47,6 @@ To do
 - Add browser-sync / watchdog components for easier local development using testserver
 - Include JavaScript components from ``govuk_frontend_toolkit``
 - Add additional GOV.UK patterns
-    - Previous/next pagination
-    - Page lists
 
 Copyright
 ---------

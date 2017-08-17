@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-14 16:41+0100\n"
+"POT-Creation-Date: 2017-08-17 17:02+0100\n"
 "Language: cy\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -97,3 +97,33 @@ msgstr ""
 #: models.py:40
 msgid "Service settings"
 msgstr ""
+
+#: templates/govuk_template_base/page-list.html:7
+#: templates/govuk_template_base/page-list.html:15
+msgid "Page"
+msgstr "Tudalen"
+
+#: templates/govuk_template_base/page-list.html:27
+#, python-format
+msgid "Page %(page)s of %(page_count)s."
+msgstr "Tudalen %(page)s o %(page_count)s."
+
+#: templates/govuk_template_base/pagination.html:3
+msgid "Pagination"
+msgstr "Tudalennau"
+
+#: templates/govuk_template_base/pagination.html:7
+msgid "Navigate to previous page"
+msgstr "Mynd i'r dudalen flaenorol"
+
+#: templates/govuk_template_base/pagination.html:18
+msgid "Navigate to next page"
+msgstr "Mynd i'r dudalen nesaf"
+
+#: templatetags/govuk_template_base.py:51
+msgid "Previous"
+msgstr "Blaenorol"
+
+#: templatetags/govuk_template_base.py:51
+msgid "Next"
+msgstr "Nesaf"

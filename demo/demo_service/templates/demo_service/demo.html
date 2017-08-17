@@ -1,1 +1,18 @@
 {% extends 'govuk_template.html' %}
+{% load static %}
+{% load govuk_template_base %}
+
+{% block head %}
+  {{ block.super }}
+  <link href="{% static 'stylesheets/demo.css' %}" media="screen" rel="stylesheet" />
+{% endblock %}
+
+{% block inner_content %}
+  <h1 class="heading-xlarge">Demo template</h1>
+
+  <h2 class="heading-medium">Page list</h2>
+  {% page_list 2 5 %}
+
+  <h2 class="heading-medium">Pagination</h2>
+  {% pagination prev_title='Home' prev_url='#prev' next_title='Page 1' next_url='#next' %}
+{% endblock %}

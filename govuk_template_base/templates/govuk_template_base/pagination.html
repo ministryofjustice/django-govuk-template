@@ -1,0 +1,27 @@
+{% load i18n %}
+
+<nav class="govuk-pagination print-hidden" role="navigation" aria-label="{% trans 'Pagination' %}">
+  <ul class="group">
+    {% if prev_page %}
+      <li class="previous">
+        <a title="{% trans 'Navigate to previous page' %}" rel="prev" href="{{ prev_page.url }}">
+          <span class="govuk-pagination__label">{{ prev }}</span>
+          {% if prev_page.title %}
+            <span class="govuk-pagination__part-title">{{ prev_page.title }}</span>
+          {% endif %}
+        </a>
+      </li>
+    {% endif %}
+
+    {% if next_page %}
+      <li class="next">
+        <a title="{% trans 'Navigate to next page' %}" rel="next" href="{{ next_page.url }}">
+          <span class="govuk-pagination__label">{{ next }}</span>
+          {% if next_page.title %}
+            <span class="govuk-pagination__part-title">{{ next_page.title }}</span>
+          {% endif %}
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>

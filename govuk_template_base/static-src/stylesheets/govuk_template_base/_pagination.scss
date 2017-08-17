@@ -1,0 +1,121 @@
+// page lists
+@import 'frontend-toolkit';
+
+.govuk-page-list {
+  padding-left: 0;
+  text-align: center;
+
+  li {
+    display: inline;
+
+    + li {
+      padding-left: 1em;
+    }
+  }
+
+  @media print {
+    display: none;
+  }
+}
+
+.govuk-page-list__description {
+  display: none;
+
+  @media print {
+    display: block;
+    @include core-19;
+  }
+}
+
+a.govuk-page-list__current-page {
+  color: $text-colour;
+  text-decoration: none;
+}
+
+// next/previous page links
+// largely taken from https://github.com/alphagov/static/blob/f2e91ac25c095f2510b850ae8350c95ec857b548/app/assets/stylesheets/govuk-component/_previous-and-next-navigation.scss
+
+.govuk-pagination {
+  display: block;
+  margin: ($gutter) (-$gutter-half);
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    @include core-16($line-height: (20 / 16));
+    float: left;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    width: 50%;
+
+    a {
+      display: block;
+      padding: $gutter-half;
+      text-decoration: none;
+
+      &:visited {
+        color: $link-colour;
+      }
+
+      &:hover, &:active {
+        background-color: $canvas-colour;
+      }
+    }
+
+    &.previous {
+      float: left;
+      text-align: left;
+    }
+
+    &.next {
+      float: right;
+      text-align: right;
+    }
+
+    @include media(mobile) {
+      float: none;
+      width: 100%;
+    }
+
+  }
+}
+
+.previous .govuk-pagination__label:before, .next .govuk-pagination__label:after {
+  display: inline-block;
+  width: 17px;
+  height: 14px;
+  margin-bottom: 1px;
+  content: ' ';
+  background: transparent file-url('../images/govuk_template_base/pagination-sprite.png') no-repeat;
+
+  @include device-pixel-ratio {
+    background-image: file-url('../images/govuk_template_base/pagination-sprite@2x.png');
+    background-size: 34px 14px;
+  }
+
+  @include media(mobile) {
+    margin-bottom: 0;
+  }
+}
+
+.previous .govuk-pagination__label:before {
+  margin-right: 5px;
+}
+
+.next .govuk-pagination__label:after {
+  margin-left: 5px;
+  background-position: -17px;
+}
+
+.govuk-pagination__label {
+  @include core-27($line-height: (33.75 / 27));
+  display: block;
+}
+
+.govuk-pagination__part-title {
+  text-decoration: underline;
+}

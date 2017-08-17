@@ -1,0 +1,28 @@
+{% load i18n %}
+{% load govuk_template_base %}
+
+{% if page_count > 1 %}
+  {% spaceless %}
+    <ul class="govuk-page-list">
+      <li>{% trans 'Page' %}</li>
+      {% for page_index in page_range %}
+        <li>
+          {% if not page_index %}
+            …
+          {% else %}
+            <a href="?{% if query_string %}{{ query_string }}&amp;{% endif %}page={{ page_index }}" {% if page == page_index %}class="govuk-page-list__current-page"{% endif %}>
+              {% if page_index != 1 %}
+                <span class="visually-hidden">{% trans 'Page' %} </span>
+              {% endif %}
+              <span>{{ page_index|separate_thousands }}</span>
+            </a>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endspaceless %}
+{% endif %}
+
+<p class="govuk-page-list__description">
+  {% blocktrans %}Page {{ page }} of {{ page_count }}.{% endblocktrans %}
+</p>
