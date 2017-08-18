@@ -1,0 +1,4 @@
+// Image asset paths required by GOV.UK frontend toolkit functions
+$path: '{{ static_url }}images/';
+
+@import 'govuk-elements';

@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 import shutil
 
+from django.conf import settings
 from django.core.management import CommandError
 from django.core.management.commands.startapp import Command as StartAppCommand
 
@@ -10,6 +11,9 @@ from django.core.management.commands.startapp import Command as StartAppCommand
 class Command(StartAppCommand):
     help = 'Creates an app that can be used as a basis for GOV.UK-styled apps ' \
            'in the current directory or optionally in the given directory.'
+    rewrite_template_suffixes = StartAppCommand.rewrite_template_suffixes + (
+        ('.scss-tpl', '.scss'),
+    )
 
     def info_message(self, message, **kwargs):
         if self.verbosity >= 1:
@@ -27,6 +31,8 @@ class Command(StartAppCommand):
                             help='Choose a specific GOV.UK elements version to download')
         parser.add_argument('--govuk-frontend-toolkit-version', default='6.0.4',
                             help='Choose a specific GOV.UK frontend-toolkit version to download')
+        parser.add_argument('--static-url', default=getattr(settings, 'STATIC_URL', '') or '/static/',
+                            help='URL for static assets')
 
     def copy_dir(self, src_dir: Path, dest_dir: Path, overwrite=True):
         if not src_dir.is_dir():
@@ -47,6 +53,7 @@ class Command(StartAppCommand):
         app_name, target = options.get('name'), options.get('directory') or os.getcwd()
         template_version = options.pop('govuk_template_version')
         elements_version = options.pop('govuk_elements_version')
+        options['extensions'].append('scss')
         frontend_toolkit_version = options.pop('govuk_frontend_toolkit_version')
 
         options['template'] = str(Path(__file__).parent / 'govuk_template_base')
