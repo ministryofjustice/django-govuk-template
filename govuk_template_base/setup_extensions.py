@@ -18,7 +18,7 @@ class SimpleCommand(setuptools.Command):
 
     def run(self):
         cwd = os.getcwd()
-        os.chdir(os.path.join(os.path.dirname(__file__), 'govuk_template_base'))
+        os.chdir(os.path.dirname(__file__))
         self.run_command()
         os.chdir(cwd)
 
