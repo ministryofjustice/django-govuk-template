@@ -3,6 +3,8 @@
 {% load static %}
 {% load govuk_template_base %}
 
+{% block page_title %}{% get_service_settings as service_settings %}GOV.UK – {{ service_settings.localised_name }}{% endblock %}
+
 {% block head %}
   {{ block.super }}
   <link href="{% static 'stylesheets/base.css' %}" media="screen" rel="stylesheet" />
