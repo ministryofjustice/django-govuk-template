@@ -72,7 +72,7 @@ msgstr ""
 
 #: models.py:29 models.py:73
 msgid "Name"
-msgstr ""
+msgstr "Enw"
 
 #: models.py:30 models.py:74
 msgid "Localise name"

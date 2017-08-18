@@ -1,6 +1,7 @@
 import enum
 
 from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
 from django.db import models
 from django.urls import NoReverseMatch, reverse
 from django.utils.translation import gettext, gettext_lazy as _, pgettext_lazy
@@ -51,7 +52,7 @@ class ServiceSettings(models.Model):
         return gettext(self.name) if self.localise_name else self.name
 
     @property
-    def header_link_view_url(self):
+    def header_link_url(self):
         if self.header_link_view_name:
             return reverse(self.header_link_view_name)
         return self.header_link_view_name
@@ -70,15 +71,23 @@ class ServiceSettings(models.Model):
 
 
 class Link(models.Model):
+    modified = models.DateTimeField(auto_now=True)
     name = models.CharField(verbose_name=_('Name'), max_length=255)
     localise_name = models.BooleanField(verbose_name=_('Localise name'), default=False)
-    view_name = models.CharField(verbose_name=_('View name'), max_length=100, validators=[view_name_validator])
+    link = models.CharField(verbose_name=_('Link'), max_length=255)
+    link_is_view_name = models.BooleanField(verbose_name=_('Link is a view name'), default=False)
 
     class Meta:
-        ordering = ('name',)
+        ordering = ('modified',)
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        if self.link_is_view_name:
+            view_name_validator(self.link)
+        else:
+            URLValidator()(self.link)
 
     @property
     def localised_name(self):
@@ -86,4 +95,6 @@ class Link(models.Model):
 
     @property
     def url(self):
-        return reverse(self.view_name)
+        if self.link_is_view_name:
+            return reverse(self.link)
+        return self.link

@@ -10,12 +10,14 @@ class Migration(migrations.Migration):
             name='Link',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('modified', models.DateTimeField(auto_now=True)),
                 ('name', models.CharField(max_length=255, verbose_name='Name')),
                 ('localise_name', models.BooleanField(default=False, verbose_name='Localise name')),
-                ('view_name', models.CharField(max_length=100, validators=[govuk_template_base.models.view_name_validator], verbose_name='View name')),
+                ('link', models.CharField(max_length=255, verbose_name='Link')),
+                ('link_is_view_name', models.BooleanField(default=False, verbose_name='Link is a view name')),
             ],
             options={
-                'ordering': ('name',),
+                'ordering': ('modified',),
             },
         ),
         migrations.CreateModel(
@@ -31,9 +33,9 @@ class Migration(migrations.Migration):
                 ('header_links', models.ManyToManyField(blank=True, related_name='_servicesettings_header_links_+', to='govuk_template_base.Link', verbose_name='Header links')),
             ],
             options={
-                'verbose_name': 'Service settings',
-                'verbose_name_plural': 'Service settings',
                 'ordering': ('-modified',),
+                'verbose_name_plural': 'Service settings',
+                'verbose_name': 'Service settings',
             },
         ),
     ]
