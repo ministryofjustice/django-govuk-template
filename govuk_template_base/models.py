@@ -79,6 +79,8 @@ class Link(models.Model):
 
     class Meta:
         ordering = ('modified',)
+        verbose_name = _('Link')
+        verbose_name_plural = _('Links')
 
     def __str__(self):
         return self.name
@@ -87,7 +89,7 @@ class Link(models.Model):
         if self.link_is_view_name:
             view_name_validator(self.link)
         else:
-            URLValidator()(self.link)
+            URLValidator(schemes=('http', 'https'))(self.link)
 
     @property
     def localised_name(self):

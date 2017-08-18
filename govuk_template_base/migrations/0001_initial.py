@@ -18,6 +18,8 @@ class Migration(migrations.Migration):
             ],
             options={
                 'ordering': ('modified',),
+                'verbose_name': 'Link',
+                'verbose_name_plural': 'Links',
             },
         ),
         migrations.CreateModel(
