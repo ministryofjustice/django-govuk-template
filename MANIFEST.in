@@ -1,5 +1,6 @@
 include LICENSE.txt
 include README.rst
+include HISTORY.rst
 recursive-include govuk_template_base *.po
 recursive-include govuk_template_base *.mo
 recursive-include govuk_template_base *.rst
