@@ -45,7 +45,6 @@ To do
 - Improve SCSS building mechanism and add print CSS
 - It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
 - Add browser-sync / watchdog components for easier local development using testserver
-- Include JavaScript components from ``govuk_frontend_toolkit``
 - Add additional GOV.UK patterns
 
 Copyright
