@@ -1,6 +1,11 @@
 Change log
 ==========
 
+0.4
+---
+
+* Updated GOV.UK dependency versions
+
 0.3
 ---
 

@@ -29,11 +29,11 @@ class Command(StartAppCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('--govuk-template-version', default='0.22.3',
+        parser.add_argument('--govuk-template-version', default='0.23.0',
                             help='Choose a specific GOV.UK template version to download')
-        parser.add_argument('--govuk-elements-version', default='3.1.1',
+        parser.add_argument('--govuk-elements-version', default='3.1.2',
                             help='Choose a specific GOV.UK elements version to download')
-        parser.add_argument('--govuk-frontend-toolkit-version', default='6.0.4',
+        parser.add_argument('--govuk-frontend-toolkit-version', default='7.2.0',
                             help='Choose a specific GOV.UK frontend-toolkit version to download')
         parser.add_argument('--static-url', default=getattr(settings, 'STATIC_URL', '') or '/static/',
                             help='URL for static assets')
