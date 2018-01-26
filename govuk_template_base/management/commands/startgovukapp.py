@@ -7,6 +7,10 @@ from django.conf import settings
 from django.core.management import CommandError
 from django.core.management.commands.startapp import Command as StartAppCommand
 
+govuk_template_version = '0.23.0'
+govuk_elements_version = '3.1.2'
+govuk_frontend_toolkit_version = '7.2.0'
+
 
 class Command(StartAppCommand):
     help = 'Creates an app that can be used as a basis for GOV.UK-styled apps ' \
@@ -29,11 +33,11 @@ class Command(StartAppCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('--govuk-template-version', default='0.23.0',
+        parser.add_argument('--govuk-template-version', default=govuk_template_version,
                             help='Choose a specific GOV.UK template version to download')
-        parser.add_argument('--govuk-elements-version', default='3.1.2',
+        parser.add_argument('--govuk-elements-version', default=govuk_elements_version,
                             help='Choose a specific GOV.UK elements version to download')
-        parser.add_argument('--govuk-frontend-toolkit-version', default='7.2.0',
+        parser.add_argument('--govuk-frontend-toolkit-version', default=govuk_frontend_toolkit_version,
                             help='Choose a specific GOV.UK frontend-toolkit version to download')
         parser.add_argument('--static-url', default=getattr(settings, 'STATIC_URL', '') or '/static/',
                             help='URL for static assets')
@@ -60,9 +64,9 @@ class Command(StartAppCommand):
         app_name, target = options.get('name'), options.get('directory') or os.getcwd()
         template_version = options.pop('govuk_template_version')
         elements_version = options.pop('govuk_elements_version')
-        options['extensions'].append('scss')
         frontend_toolkit_version = options.pop('govuk_frontend_toolkit_version')
 
+        options['extensions'].append('scss')
         options['template'] = str(Path(__file__).parent / 'govuk_template_base')
         super().handle(**options)
         self.paths_to_remove = []

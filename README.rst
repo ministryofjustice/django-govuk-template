@@ -26,8 +26,13 @@ See the demo folder in this repository on `GitHub`_, it is not included in distr
 Additionally, add ``django-govuk-forms`` to your project to output Django forms styled using GOV.UK elements.
 You can install this package automatically by adding ``django-govuk-template[forms]`` to your requirements file.
 
+NB: Until version 1.0, there is likely going to be a lot of variation in the api, so it’s a good idea to pin a specific version.
+
 Development
 -----------
+
+.. image:: https://travis-ci.org/ministryofjustice/django-govuk-template.svg?branch=master
+    :target: https://travis-ci.org/ministryofjustice/django-govuk-template
 
 Please report bugs and open pull requests on `GitHub`_.
 
@@ -46,11 +51,12 @@ To do
 - It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
 - Add browser-sync / watchdog components for easier local development using testserver
 - Add additional GOV.UK patterns
+- Improve ``ServiceSettings`` model
 
 Copyright
 ---------
 
-Copyright © 2017 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
+Copyright © 2018 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
 
 .. _GitHub: https://github.com/ministryofjustice/django-govuk-template
 .. _PyPi: https://pypi.org/project/django-govuk-template/
