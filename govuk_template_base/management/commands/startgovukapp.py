@@ -176,13 +176,9 @@ class Command(StartAppCommand):
         self.copy_dir(temporary_folder / 'images', images_dir)
 
     def build_scss(self, scss_dir: Path, css_dir: Path):
+        from govuk_template_base.management.commands.buildscss import compile_scss
+
         try:
-            import sass
-        except ImportError:
-            sass = None
-
-        if not sass:
-            self.info_message('libsass is not available, try installing using [scss] extra')
-            return
-
-        sass.compile(dirname=(str(scss_dir), str(css_dir)), output_style='compressed')
+            compile_scss(str(scss_dir), str(css_dir))
+        except CommandError as e:
+            self.info_message(str(e), style_func=self.style.WARNING)

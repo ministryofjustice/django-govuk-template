@@ -2,4 +2,6 @@
 // use `@import 'govuk_template_base/defaults';` instead if building with `buildscss` management command
 $path: '/static/images/';
 
+$is-print: true;
+
 @import 'govuk_template_base/pagination';
