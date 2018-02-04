@@ -47,7 +47,8 @@ Distribute a new version to `PyPi`_ by updating the ``VERSION`` tuple in ``govuk
 To do
 -----
 
-- Add browser-sync / watchdog components for easier local development using testserver
+- Add browser-sync for easier local development
+- Add javascript building options
 - Add additional GOV.UK patterns
 - Improve ``ServiceSettings`` model
 - Perhaps improve SCSS building mechanism (e.g. command line fallback) and print styles

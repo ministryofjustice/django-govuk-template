@@ -23,6 +23,7 @@ install_requires = ['django>=1.11']
 extras_require = {
     'forms': ['django-govuk-forms'],
     'scss': ['libsass'],
+    'watch': ['watchdog'],
 }
 tests_require = ['flake8']
 
