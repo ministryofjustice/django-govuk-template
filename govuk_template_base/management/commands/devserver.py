@@ -1,10 +1,12 @@
 import os
+import re
 import threading
 import warnings
 
 from django.apps import apps
 from django.conf import settings
 from django.contrib.staticfiles.handlers import StaticFilesHandler
+from django.core.handlers.wsgi import WSGIHandler
 from django.core.management import CommandError, call_command
 from django.core.management.commands.runserver import Command as RunserverCommand
 try:
@@ -14,6 +16,7 @@ except ImportError:
     FileSystemEventHandler, Observer = object, None
 
 base_options = ('verbosity', 'settings', 'pythonpath', 'traceback', 'no_color')
+reload_script_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'devserver.js')
 
 
 class Command(RunserverCommand, FileSystemEventHandler):
@@ -54,8 +57,10 @@ class Command(RunserverCommand, FileSystemEventHandler):
         self.build_options = {option: options[option] for option in base_options}
         if not Observer:
             warnings.warn('watchdog is not available, try installing using [watch] extra')
-        elif not options['use_reloader'] or os.environ.get('RUN_MAIN'):  # try to only run one observer
+        elif not options['use_reloader'] or os.environ.get('RUN_MAIN'):
+            # try to only run one observer and websocket
             self.setup_observer()
+            self.setup_reload_socket()
         return super().handle(*args, **options)
 
     def setup_observer(self):
@@ -67,6 +72,11 @@ class Command(RunserverCommand, FileSystemEventHandler):
             observer.schedule(self, watched_app_path, recursive=True)
         observer.daemon = True
         observer.start()
+
+    def setup_reload_socket(self):
+        reload_socket = ReloadSocket()
+        reload_socket.daemon = True
+        reload_socket.start()
 
     def on_created(self, event):
         self.schedule_build(event.src_path)
@@ -89,6 +99,35 @@ class Command(RunserverCommand, FileSystemEventHandler):
 
     def get_handler(self, *args, **options):
         handler = super().get_handler(*args, **options)
+        handler = ReloadHandler(handler)
         if self.serve_static:
             handler = StaticFilesHandler(handler)
         return handler
+
+
+class ReloadHandler(WSGIHandler):
+    def __init__(self, application):
+        self.application = application
+        super().__init__()
+
+    def should_handle(self, response):
+        content_type = response['content-type']
+        return Observer and response.status_code == 200 and not response.streaming and \
+            (content_type == 'text/html' or content_type.startswith('text/html;'))
+
+    def get_response(self, request):
+        response = super().get_response(request)
+        if self.should_handle(response):
+            encoding = response.encoding if hasattr(response, 'encoding') else 'utf-8'
+            content = response.content.decode(encoding)
+            script_tag = self.get_script_tag()
+            content = re.sub(r'</head>', script_tag + '</head>', content,
+                             count=1, flags=re.IGNORECASE)
+            response.content = content.encode(encoding)
+            if response.has_header('content-length'):
+                response['content-length'] = len(response.content)
+        return response
+
+    def get_script_tag(self):
+        with open(reload_script_path, 'rt') as f:
+            return '<script async>%s</script>' % f.read()
