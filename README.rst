@@ -58,7 +58,8 @@ To do
 Copyright
 ---------
 
-Copyright © 2018 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
+Copyright (C) 2018 HM Government (Ministry of Justice Digital Services).
+See LICENSE.txt for further details.
 
 .. _GitHub: https://github.com/ministryofjustice/django-govuk-template
 .. _PyPi: https://pypi.org/project/django-govuk-template/
