@@ -8,14 +8,12 @@ from setuptools import find_packages, setup
 if sys.version_info[0:2] < (3, 5):
     warnings.warn('This package will only run on Python version 3.5+')
 
-# allow setup.py to be run from any path
-cwd = os.getcwd()
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+root_path = os.path.abspath(os.path.dirname(__file__))
 
-package_info = importlib.import_module('govuk_template_base')
-with open('README.rst') as readme:
+with open(os.path.join(root_path, 'README.rst')) as readme:
     README = readme.read()
 
+package_info = importlib.import_module('govuk_template_base')
 setup_extensions = importlib.import_module('govuk_template_base.setup_extensions')
 
 setup_requires = ['setuptools', 'pip', 'wheel']
@@ -38,9 +36,10 @@ setup(
     description='Django app that builds `template` and `elements` components from '
                 'the Government Digital Services style guide',
     long_description=README,
-    keywords='django,govuk,template,elements,frontend,toolkit',
+    keywords='django govuk template elements frontend toolkit',
     classifiers=[
         'Development Status :: 4 - Beta',
+        'Framework :: Django',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
@@ -56,4 +55,3 @@ setup(
     tests_require=tests_require,
     test_suite='tests',
 )
-os.chdir(cwd)
