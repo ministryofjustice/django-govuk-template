@@ -24,6 +24,7 @@ extras_require = {
     'watch': ['watchdog'],
 }
 tests_require = ['flake8']
+setup_requires += install_requires
 
 setup(
     name='django-govuk-template',
