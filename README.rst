@@ -14,6 +14,7 @@ Usage
 
 - Setup a Django project using ``manage.py startproject`` or other means
 - Install ``django-govuk-template`` and add ``govuk_template_base`` to ``INSTALLED_APPS``
+- Install ``libsass`` with ``pip install libsass``. This helps to build the downloaded govuk_template system.
 - Call ``manage.py startgovukapp [[app name, e.g. govuk_template]]``
     - Add this app to ``INSTALLED_APPS``
     - Ensure that this app is included in source control as the intention is that it’s only rebuilt as needed
