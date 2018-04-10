@@ -41,7 +41,7 @@ back-end API), you will need to set the following paramaters in your app's setti
     MIGRATION_MODULES = {'govuk_template_base': None}  # don't try to run migrations on this app
     SERVICE_SETTINGS = {
         'localised_name': 'My New Service',
-        'phase': 'alpha',  # 
+        'phase': 'alpha',  # Only required to remove the banner for 'live' phase
         'phase_name': 'Alpha',
         'has_header_links': True,
         'header_link_url': 'http://www.myurl.gov.uk/',
