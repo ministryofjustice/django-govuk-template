@@ -27,6 +27,41 @@ See the demo folder in this repository on `GitHub`_, it is not included in distr
 Additionally, add ``django-govuk-forms`` to your project to output Django forms styled using GOV.UK elements.
 You can install this package automatically by adding ``django-govuk-template[forms]`` to your requirements file.
 
+No-database mode
+----------------
+
+If you want to use this package in a Django app that doesn't have a database (eg a front-end app consuming a
+back-end API), you will need to set the following paramaters in your app's settings file:
+
+.. code:: python
+
+    GOVUK_TEMPLATE_NO_DATABASE = True
+    MIGRATION_MODULES = {'govuk_template_base': None}  # don't try to run migrations on this app
+    SERVICE_SETTINGS = {
+        'localised_name': 'My New Service',
+        'phase': 'alpha',  # 
+        'phase_name': 'Alpha',
+        'has_header_links': True,
+        'header_link_url': 'http://www.myurl.gov.uk/',
+        'header_links': {
+            'all': [
+                {
+                    'url': 'https://www.myurl.gov.uk/header1',
+                    'localised_name': 'Header link 1'
+                }
+            ]
+        }
+        'has_footer_links': True,
+        'footer_links': {
+            'all': [
+                {
+                    'url': 'https://www.myurl.gov.uk/footer1',
+                    'localised_name': 'Footer link 1'
+                }
+            ]
+        }
+    }
+
 Development
 -----------
 

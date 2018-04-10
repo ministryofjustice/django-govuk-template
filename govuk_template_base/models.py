@@ -5,6 +5,7 @@ from django.core.validators import URLValidator
 from django.db import models
 from django.urls import NoReverseMatch, reverse
 from django.utils.translation import gettext, gettext_lazy as _, pgettext_lazy
+from django.conf import settings
 
 
 class ServicePhase(enum.Enum):
@@ -39,13 +40,18 @@ class ServiceSettings(models.Model):
     class Meta:
         ordering = ('-modified',)
         verbose_name = verbose_name_plural = _('Service settings')
+        if hasattr(settings, 'GOVUK_TEMPLATE_NO_DATABASE') and settings.GOVUK_TEMPLATE_NO_DATABASE:
+            managed = False
 
     def __str__(self):
         return self.name
 
     @classmethod
     def default_settings(cls):
-        return cls.objects.first() or cls.objects.create(name='Untitled')
+        if hasattr(settings, 'GOVUK_TEMPLATE_NO_DATABASE') and settings.GOVUK_TEMPLATE_NO_DATABASE:
+            return settings.SERVICE_SETTINGS
+        else:
+            return cls.objects.first() or cls.objects.create(name='Untitled')
 
     @property
     def localised_name(self):
