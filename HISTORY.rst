@@ -1,6 +1,12 @@
 Change log
 ==========
 
+0.5
+---
+
+* Added print stylesheet
+* Added simple devserver which rebuilds SCSS files
+
 0.4
 ---
 

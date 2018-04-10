@@ -100,6 +100,10 @@ a.govuk-page-list__current-page {
   @include media(mobile) {
     margin-bottom: 0;
   }
+
+  @media print {
+    display: none;
+  }
 }
 
 .previous, .next {
