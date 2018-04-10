@@ -8,6 +8,12 @@
 {% block head %}
   {{ block.super }}
   <link href="{% static 'stylesheets/base.css' %}" media="screen" rel="stylesheet" />
+  <link href="{% static 'stylesheets/base-print.css' %}" media="print" rel="stylesheet"/>
+  <style media="print">
+    a[href^="/"]:after {
+      content: " ({{ request.scheme }}://{{ request.get_host }}" attr(href) ")";
+    }
+  </style>
 {% endblock %}
 
 {% block cookie_message %}

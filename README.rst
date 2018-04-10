@@ -27,6 +27,8 @@ See the demo folder in this repository on `GitHub`_, it is not included in distr
 Additionally, add ``django-govuk-forms`` to your project to output Django forms styled using GOV.UK elements.
 You can install this package automatically by adding ``django-govuk-template[forms]`` to your requirements file.
 
+NB: Until version 1.0, there is likely going to be a lot of variation in the api, so it’s a good idea to pin a specific version.
+
 No-database mode
 ----------------
 
@@ -65,6 +67,9 @@ back-end API), you will need to set the following paramaters in your app's setti
 Development
 -----------
 
+.. image:: https://travis-ci.org/ministryofjustice/django-govuk-template.svg?branch=master
+    :target: https://travis-ci.org/ministryofjustice/django-govuk-template
+
 Please report bugs and open pull requests on `GitHub`_.
 
 Use ``python setup.py test`` to run all tests.
@@ -78,15 +83,19 @@ Distribute a new version to `PyPi`_ by updating the ``VERSION`` tuple in ``govuk
 To do
 -----
 
-- Improve SCSS building mechanism and add print CSS
-- It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
-- Add browser-sync / watchdog components for easier local development using testserver
+- Add browser-sync for easier local development
+- Add javascript building options
 - Add additional GOV.UK patterns
+- Improve ``ServiceSettings`` model
+- Perhaps improve SCSS building mechanism (e.g. command line fallback) and print styles
+- Perhaps improve app naming or documentation regarding ``govuk_template_base`` and ``govuk_template``
+- It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
 
 Copyright
 ---------
 
-Copyright © 2017 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
+Copyright (C) 2018 HM Government (Ministry of Justice Digital Services).
+See LICENSE.txt for further details.
 
 .. _GitHub: https://github.com/ministryofjustice/django-govuk-template
 .. _PyPi: https://pypi.org/project/django-govuk-template/

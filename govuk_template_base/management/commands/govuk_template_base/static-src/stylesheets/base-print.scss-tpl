@@ -1,5 +1,9 @@
 // Image asset paths required by GOV.UK frontend toolkit functions
 // use `@import 'govuk_template_base/defaults';` instead if building with `buildscss` management command
-$path: '/static/images/';
+$path: '{{ static_url }}images/';
 
-@import 'govuk_template_base/pagination';
+$is-print: true;
+
+.print-hidden {
+  display: none;
+}
