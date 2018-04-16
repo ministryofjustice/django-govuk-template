@@ -14,6 +14,7 @@ Usage
 
 - Setup a Django project using ``manage.py startproject`` or other means
 - Install ``django-govuk-template`` and add ``govuk_template_base`` to ``INSTALLED_APPS``
+- Install ``libsass`` with ``pip install libsass``. This helps to build the downloaded govuk_template system.
 - Call ``manage.py startgovukapp [[app name, e.g. govuk_template]]``
     - Add this app to ``INSTALLED_APPS``
     - Ensure that this app is included in source control as the intention is that it’s only rebuilt as needed
@@ -27,6 +28,41 @@ Additionally, add ``django-govuk-forms`` to your project to output Django forms 
 You can install this package automatically by adding ``django-govuk-template[forms]`` to your requirements file.
 
 NB: Until version 1.0, there is likely going to be a lot of variation in the api, so it’s a good idea to pin a specific version.
+
+No-database mode
+----------------
+
+If you want to use this package in a Django app that doesn't have a database (eg a front-end app consuming a
+back-end API), you will need to set the following paramaters in your app's settings file:
+
+.. code:: python
+
+    GOVUK_TEMPLATE_NO_DATABASE = True
+    MIGRATION_MODULES = {'govuk_template_base': None}  # don't try to run migrations on this app
+    SERVICE_SETTINGS = {
+        'localised_name': 'My New Service',
+        'phase': 'alpha',  # Only required to remove the banner for 'live' phase
+        'phase_name': 'Alpha',
+        'has_header_links': True,
+        'header_link_url': 'http://www.myurl.gov.uk/',
+        'header_links': {
+            'all': [
+                {
+                    'url': 'https://www.myurl.gov.uk/header1',
+                    'localised_name': 'Header link 1'
+                }
+            ]
+        }
+        'has_footer_links': True,
+        'footer_links': {
+            'all': [
+                {
+                    'url': 'https://www.myurl.gov.uk/footer1',
+                    'localised_name': 'Footer link 1'
+                }
+            ]
+        }
+    }
 
 Development
 -----------
