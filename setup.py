@@ -30,6 +30,7 @@ setup(
     name='django-govuk-template',
     version=package_info.__version__,
     author=package_info.__author__,
+    author_email=package_info.__email__,
     url='https://github.com/ministryofjustice/django-govuk-template',
     packages=find_packages(exclude=['demo', 'tests']),
     include_package_data=True,

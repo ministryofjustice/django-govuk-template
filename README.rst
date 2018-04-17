@@ -9,11 +9,22 @@ This package takes components published by GDS and creates an app in a Django pr
 This process downloads a release from https://github.com/alphagov/govuk_template and the contents of Node.js packages
 https://www.npmjs.com/package/govuk-elements-sass and https://www.npmjs.com/package/govuk_frontend_toolkit
 
+NB: Until version 1.0, there is likely going to be a lot of variation in the api, so it’s a good idea to pin a specific minor version.
+
 Usage
 -----
 
+Install with pip, i.e. ``pip install django-govuk-template``. There are 3 optional extras that can also be installed:
+
+- ``forms``: also installs ``django-govuk-forms`` which outputs Django forms using the correct HTML structures for GOV.UK standard styles
+- ``scss``: allows building SCSS assets with a management command
+- ``watch``: use in combination with the ``scss`` extra to automatically build SCSS assets while developing locally
+
+Django project setup
+~~~~~~~~~~~~~~~~~~~~
+
 - Setup a Django project using ``manage.py startproject`` or other means
-- Install ``django-govuk-template`` and add ``govuk_template_base`` to ``INSTALLED_APPS``
+- Install ``django-govuk-template`` (along with desired extras) and add ``govuk_template_base`` to ``INSTALLED_APPS``
 - Call ``manage.py startgovukapp [[app name, e.g. govuk_template]]``
     - Add this app to ``INSTALLED_APPS``
     - Ensure that this app is included in source control as the intention is that it’s only rebuilt as needed
@@ -22,11 +33,6 @@ Usage
 - Use ``[[app name, e.g. govuk_template]].html`` as the template to extend from and overrive the ``inner_content`` block
 
 See the demo folder in this repository on `GitHub`_, it is not included in distributions.
-
-Additionally, add ``django-govuk-forms`` to your project to output Django forms styled using GOV.UK elements.
-You can install this package automatically by adding ``django-govuk-template[forms]`` to your requirements file.
-
-NB: Until version 1.0, there is likely going to be a lot of variation in the api, so it’s a good idea to pin a specific version.
 
 Development
 -----------
@@ -47,7 +53,7 @@ Distribute a new version to `PyPi`_ by updating the ``VERSION`` tuple in ``govuk
 To do
 -----
 
-- Add browser-sync for easier local development
+- Add browser-sync/equivalent for easier local development
 - Add javascript building options
 - Add additional GOV.UK patterns
 - Improve ``ServiceSettings`` model
