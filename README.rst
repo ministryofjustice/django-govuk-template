@@ -34,6 +34,28 @@ Django project setup
 
 See the demo folder in this repository on `GitHub`_, it is not included in distributions.
 
+Service settings
+~~~~~~~~~~~~~~~~
+
+The service’s title, phase and header/footer links can be configured through service settings objects.
+
+Typically, these are stored in the ``ServiceSettings`` model and initial configuration could be a data migration or a fixture.
+However if the ``GOVUK_SERVICE_SETTINGS`` setting is defined, it will take precedence. This is useful in cases where no database is set up.
+
+.. code-block:: python
+
+    GOVUK_SERVICE_SETTINGS = {
+        'name': 'Service name',
+        'phase': 'beta',
+        'header_link_view_name': 'service_app:home',
+        'header_links': [
+            {'name': 'Home', 'link': 'service_app:home', 'link_is_view_name': True},
+        ],
+    }
+
+Service settings stored in models allow for localisation into different languages.
+Set ``localise_name`` to ``True`` and provide translations in your project’s localised messages.
+
 Development
 -----------
 
@@ -56,7 +78,7 @@ To do
 - Add browser-sync/equivalent for easier local development
 - Add javascript building options
 - Add additional GOV.UK patterns
-- Improve ``ServiceSettings`` model
+- Improve service setting configuration
 - Perhaps improve SCSS building mechanism (e.g. command line fallback) and print styles
 - Perhaps improve app naming or documentation regarding ``govuk_template_base`` and ``govuk_template``
 - It would be nice to require as few external tools as possible (e.g. docker/node/ruby) to make building simpler
