@@ -9,7 +9,7 @@ from django.core.management.commands.startapp import Command as StartAppCommand
 
 govuk_template_version = '0.23.0'
 govuk_elements_version = '3.1.2'
-govuk_frontend_toolkit_version = '7.2.0'
+govuk_frontend_toolkit_version = '7.4.2'
 
 
 class Command(StartAppCommand):
