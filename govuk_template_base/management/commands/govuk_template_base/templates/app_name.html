@@ -40,7 +40,7 @@
         {% block proposition_menu %}
           {% if service_settings.has_header_links %}
             <ul id="proposition-links">
-              {% for link in service_settings.header_links.all %}
+              {% for link in service_settings.get_header_links %}
                 <li><a href="{{ link.url }}" class="{% if link.link_is_view_name and link.link == request.resolver_match.view_name %}active{% endif %}">{{ link.localised_name }}</a></li>
               {% endfor %}
             </ul>
@@ -81,7 +81,7 @@
   {% get_service_settings as service_settings %}
   {% if service_settings.has_footer_links %}
     <ul>
-      {% for link in service_settings.footer_links.all %}
+      {% for link in service_settings.get_footer_links %}
         <li><a href="{{ link.url }}">{{ link.localised_name }}</a></li>
       {% endfor %}
     </ul>

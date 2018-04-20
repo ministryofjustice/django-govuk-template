@@ -3,7 +3,7 @@ import itertools
 from django import template
 from django.utils.translation import gettext_lazy as _
 
-from govuk_template_base.models import ServiceSettings
+from govuk_template_base.service_settings import default_settings
 
 register = template.Library()
 
@@ -15,9 +15,7 @@ def separate_thousands(value):
     return '{:,}'.format(value)
 
 
-@register.simple_tag
-def get_service_settings():
-    return ServiceSettings.default_settings()
+register.simple_tag(name='get_service_settings')(default_settings)
 
 
 @register.inclusion_tag('govuk_template_base/page-list.html')

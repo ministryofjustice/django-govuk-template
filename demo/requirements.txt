@@ -1,0 +1,1 @@
+libsass  # normally installed with the "scss" extra
