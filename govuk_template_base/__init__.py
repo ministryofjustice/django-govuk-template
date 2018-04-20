@@ -1,4 +1,4 @@
-VERSION = (0, 6)
+VERSION = (0, 7)
 __version__ = '.'.join(map(str, VERSION))
 __author__ = 'Ministry of Justice'
 __email__ = 'dev@digital.justice.gov.uk'

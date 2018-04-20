@@ -1,6 +1,16 @@
 Change log
 ==========
 
+0.7
+---
+
+* Added service settings fallback when no databases are defined
+
+0.6
+---
+
+* Improved packaging
+
 0.5
 ---
 
