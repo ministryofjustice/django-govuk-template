@@ -1,6 +1,8 @@
 Django GOV.UK Template
 ======================
 
+**This library has not yet been updated to use the new** `Design system`_
+
 It should be easy to make a Django-based service that follows Government Digital Services’ style guide and reference materials.
 But https://pypi.python.org/pypi/govuk-template is not kept updated and is not readily usable in Django and
 https://github.com/alphagov/govuk_template cannot be installed directly into a Django project without complex build steps.
@@ -33,6 +35,8 @@ Django project setup
 - Use ``[[app name, e.g. govuk_template]].html`` as the template to extend from and overrive the ``inner_content`` block
 
 See the demo folder in this repository on `GitHub`_, it is not included in distributions.
+
+Another demo [1]_ shows the process of converting the Django tutorial polls app – see the commit history.
 
 Service settings
 ~~~~~~~~~~~~~~~~
@@ -89,5 +93,8 @@ Copyright
 Copyright (C) 2018 HM Government (Ministry of Justice Digital Services).
 See LICENSE.txt for further details.
 
+.. _Design system: https://design-system.service.gov.uk/
 .. _GitHub: https://github.com/ministryofjustice/django-govuk-template
 .. _PyPi: https://pypi.org/project/django-govuk-template/
+
+.. [1] https://github.com/ministryofjustice/gov.uk-with-django
