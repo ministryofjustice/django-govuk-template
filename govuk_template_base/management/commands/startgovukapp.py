@@ -7,9 +7,9 @@ from django.conf import settings
 from django.core.management import CommandError
 from django.core.management.commands.startapp import Command as StartAppCommand
 
-govuk_template_version = '0.23.0'
-govuk_elements_version = '3.1.2'
-govuk_frontend_toolkit_version = '7.4.2'
+govuk_template_version = '0.24.0'
+govuk_elements_version = '3.1.3'
+govuk_frontend_toolkit_version = '8.1.0'
 
 
 class Command(StartAppCommand):
