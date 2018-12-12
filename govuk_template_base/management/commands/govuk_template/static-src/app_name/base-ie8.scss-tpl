@@ -1,0 +1,5 @@
+// Asset paths required by GOV.UK design system functions
+// use `@import 'govuk_template_base/settings';` instead if building with `buildscss` management command
+$govuk-assets-path: '{{ static_url }}{{ app_name }}/';
+
+@import 'govuk-frontend/all-ie8';

@@ -1,0 +1,12 @@
+from django.conf import settings
+from django.utils.translation import get_language
+
+
+def {{ app_name }}(_):
+    return {
+        'html_lang': get_language() or settings.LANGUAGE_CODE,
+        'html_classes': 'govuk-template',
+        'body_classes': 'govuk-template__body',
+        'main_classes': 'govuk-main-wrapper',
+        'theme_color': '#0b0c0c',
+    }

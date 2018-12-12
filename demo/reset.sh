@@ -21,8 +21,8 @@ service_settings.phase = 'alpha'
 service_settings.header_link_view_name = 'demo:demo'
 service_settings.header_links.add(Link.objects.create(name='Home', link='demo:demo', link_is_view_name=True))
 service_settings.header_links.add(Link.objects.create(name='GOV.UK', link='https://gov.uk/'))
-service_settings.footer_links.add(Link.objects.create(name='Home', link='demo:demo', link_is_view_name=True))
-service_settings.footer_links.add(Link.objects.create(name='GOV.UK', link='https://gov.uk/'))
+service_settings.meta_links.add(Link.objects.create(name='Home', link='demo:demo', link_is_view_name=True))
+service_settings.meta_links.add(Link.objects.create(name='GOV.UK', link='https://gov.uk/'))
 service_settings.save()
 "
 echo Run demo using "./manage.py runserver" or "./manage.py runserver --settings settings_without_db"

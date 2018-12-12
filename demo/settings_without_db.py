@@ -10,7 +10,16 @@ GOVUK_SERVICE_SETTINGS = {
         {'name': 'Home', 'link': 'demo:demo', 'link_is_view_name': True},
         {'name': 'GOV.UK', 'link': 'https://gov.uk/'},
     ],
-    'footer_links': [
+    'footer_sections': [
+        {
+            'name': 'Footer navigation',
+            'links': [
+                {'name': 'Home', 'link': 'demo:demo', 'link_is_view_name': True},
+                {'name': 'GOV.UK', 'link': 'https://gov.uk/'},
+            ]
+        },
+    ],
+    'meta_links': [
         {'name': 'Home', 'link': 'demo:demo', 'link_is_view_name': True},
         {'name': 'GOV.UK', 'link': 'https://gov.uk/'},
     ],

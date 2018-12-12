@@ -1,29 +1,30 @@
-{% extends 'govuk_template.html' %}
+{% extends 'govuk_template/template.html' %}
 {% load static %}
 {% load govuk_template_base %}
 
 {% block head %}
-  {{ block.super }}
-  <link href="{% static 'stylesheets/demo.css' %}" media="screen" rel="stylesheet" />
-  <link href="{% static 'stylesheets/demo-print.css' %}" media="print" rel="stylesheet" />
+    {{ block.super }}
+    <link href="{% static 'demo_service/demo.css' %}" rel="stylesheet"/>
 {% endblock %}
 
-{% block inner_content %}
-  <h1 class="heading-xlarge">Demo template</h1>
+{% block content %}
+    <h1 class="govuk-heading-xl">Demo template</h1>
 
-  <h2 class="heading-medium">Page list</h2>
-  {% page_list 2 5 %}
+    <h2 class="govuk-heading-m">Page list</h2>
+    {% page_list 2 50 %}
+    <hr class="govuk-section-break--l" />
 
-  <h2 class="heading-medium">Pagination</h2>
-  {% pagination prev_title='Home' prev_url='#prev' next_title='Page 1' next_url='#next' %}
+    <h2 class="govuk-heading-m">Pagination</h2>
+    {% pagination prev_title='Home' prev_url='#prev' next_title='Page 1' next_url='#next' %}
+    <hr class="govuk-section-break--l" />
 
-  <h2 class="heading-medium">Disclosure</h2>
-  <details>
-    <summary><span class="summary">Click for more information</span></summary>
-    <div class="panel panel-border-narrow">
-      <p>
-        Lorem ipsum dolor sit amet…
-      </p>
-    </div>
-  </details>
+    <h2 class="govuk-heading-m">Disclosure</h2>
+    <details class="govuk-details">
+        <summary class="govuk-details__summary">
+            <span class="govuk-details__summary-text">Click for more information</span>
+        </summary>
+        <div class="govuk-details__text">
+            <p>Lorem ipsum dolor sit amet…</p>
+        </div>
+    </details>
 {% endblock %}

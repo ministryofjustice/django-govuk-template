@@ -7,9 +7,7 @@ from django.conf import settings
 from django.core.management import CommandError
 from django.core.management.commands.startapp import Command as StartAppCommand
 
-govuk_template_version = '0.24.0'
-govuk_elements_version = '3.1.3'
-govuk_frontend_toolkit_version = '8.1.0'
+GOVUK_FRONTEND_VERSION = '2.4.1'
 
 
 class Command(StartAppCommand):
@@ -33,67 +31,114 @@ class Command(StartAppCommand):
 
     def add_arguments(self, parser):
         super().add_arguments(parser)
-        parser.add_argument('--govuk-template-version', default=govuk_template_version,
-                            help='Choose a specific GOV.UK template version to download')
-        parser.add_argument('--govuk-elements-version', default=govuk_elements_version,
-                            help='Choose a specific GOV.UK elements version to download')
-        parser.add_argument('--govuk-frontend-toolkit-version', default=govuk_frontend_toolkit_version,
-                            help='Choose a specific GOV.UK frontend-toolkit version to download')
-        parser.add_argument('--static-url', default=getattr(settings, 'STATIC_URL', '') or '/static/',
-                            help='URL for static assets')
+        parser.add_argument('--govuk-frontend-version', default=GOVUK_FRONTEND_VERSION,
+                            help='Choose a specific GOV.UK frontend version to download')
 
-    def copy_dir(self, src_dir: Path, dest_dir: Path, overwrite=True, ignore_paths=()):
-        ignore_paths = set(src_dir / Path(path) for path in ignore_paths)
+    def copy_dir(self, src_dir: Path, dest_dir: Path, overwrite=True, path_filter=None):
         if not src_dir.is_dir():
             raise FileNotFoundError('%s is not a directory' % src_dir)
         if not dest_dir.is_dir():
             if dest_dir.exists():
                 raise FileExistsError('%s is not a directory' % dest_dir)
             dest_dir.mkdir(parents=True)
-        for item in src_dir.iterdir():
-            if item in ignore_paths:
-                continue
+        for item in filter(path_filter, src_dir.iterdir()):
             dest_file = dest_dir / item.name
             if item.is_dir():
-                self.copy_dir(item, dest_file, overwrite=overwrite)
+                self.copy_dir(item, dest_file, overwrite=overwrite, path_filter=path_filter)
             elif not dest_file.exists() or overwrite:
                 self.debug_message('Copying file %s into target app' % dest_file)
                 shutil.copy(str(item), str(dest_file))
 
     def handle(self, **options):
         app_name, target = options.get('name'), options.get('directory') or os.getcwd()
-        template_version = options.pop('govuk_template_version')
-        elements_version = options.pop('govuk_elements_version')
-        frontend_toolkit_version = options.pop('govuk_frontend_toolkit_version')
+        frontend_version = options.pop('govuk_frontend_version')
+
+        static_url = getattr(settings, 'STATIC_URL', None) or '/static/'
+        if not static_url.endswith('/'):
+            static_url += '/'
 
         options['extensions'].append('scss')
-        options['template'] = str(Path(__file__).parent / 'govuk_template_base')
+        options['template'] = str(Path(__file__).parent / 'govuk_template')
+        options['static_url'] = static_url
+
         super().handle(**options)
+
         self.paths_to_remove = []
 
         app_dir = Path(target) / app_name
-        templates_dir = app_dir / 'templates'
-        # static assets all have absolute paths so cannot include app_name
-        static_dir = app_dir / 'static'
-        images_dir = static_dir / 'images'
-        css_dir = static_dir / 'stylesheets'
-        js_dir = static_dir / 'javascripts'
-        source_dir = app_dir / 'static-src'
-        scss_dir = source_dir / 'stylesheets'
+        templates_dir = app_dir / 'templates' / app_name
+        source_dir = app_dir / 'static-src' / app_name
+        static_dir = app_dir / 'static' / app_name
 
-        for path in (scss_dir, images_dir, css_dir, js_dir):
+        for path in (templates_dir, source_dir, static_dir):
             path.is_dir() or path.mkdir(parents=True)
 
-        self.load_govuk_template(template_version, static_dir, templates_dir)
-        self.load_govuk_elements(elements_version, frontend_toolkit_version, scss_dir, js_dir)
-        self.load_govuk_frontend_toolkit(frontend_toolkit_version, scss_dir, js_dir, images_dir)
+        try:
+            self.load_govuk_frontend(frontend_version, source_dir, static_dir)
+            self.process_templates(app_name, templates_dir)
+            self.build_scss(app_name, source_dir, static_dir)
 
-        self.info_message('Add `%s` to INSTALLED_APPS' % options['name'])
-        self.info_message('Add `govuk_template_base.context_processors.govuk_template_base` to '
-                          'template context processors')
+            message_context = {'app_name': options['name']}
+            self.info_message('Add `%(app_name)s` to INSTALLED_APPS setting' % message_context,
+                              style_func=self.style.SUCCESS)
+            self.info_message('Add `%(app_name)s.context_processors.%(app_name)s` to '
+                              'template context processors' % message_context,
+                              style_func=self.style.SUCCESS)
+        finally:
+            self.cleanup()
 
-        self.build_scss(scss_dir, css_dir)
+    def load_govuk_frontend(self, version: str, source_dir: Path, static_dir: Path):
+        self.debug_message('Loading `govuk_frontend` package listing')
+        with open(self.download('https://registry.npmjs.org/govuk-frontend/')) as f:
+            frontend_package = json.load(f)
+        try:
+            elements_dist = frontend_package['versions'][version]
+        except KeyError:
+            raise CommandError('`govuk-frontend` version %s not available, choose from: %s' % (
+                version, ', '.join(sorted(frontend_package['versions'].keys()))
+            ))
 
+        self.info_message('Downloading `govuk_frontend` version %s' % version)
+        archive = self.download(elements_dist['dist']['tarball'])
+        temporary_dir = Path(self.extract(archive))
+        temporary_assets_dir = temporary_dir / 'assets'
+
+        # copy images and fonts
+        self.copy_dir(temporary_assets_dir, static_dir)
+
+        # copy javascript files
+        self.copy_dir(
+            temporary_dir, source_dir,
+            path_filter=lambda path: path != temporary_assets_dir and path.is_dir() or path.suffix.lower() == '.js'
+        )
+        (static_dir / 'base.js').symlink_to(source_dir / 'all.js')
+
+        # copy sass files
+        self.copy_dir(
+            temporary_dir, source_dir,
+            path_filter=lambda path: path != temporary_assets_dir and path.is_dir() or path.suffix.lower() == '.scss'
+        )
+        (source_dir / 'all.scss').rename(source_dir / '_all.scss')
+        (source_dir / 'all-ie8.scss').rename(source_dir / '_all-ie8.scss')
+
+    def process_templates(self, app_name: str, templates_dir: Path):
+        for path in templates_dir.rglob('*.html'):
+            with path.open('rt') as f:
+                text = f.read()
+            text = text.replace('##app_name##', app_name)
+            with path.open('wt') as f:
+                f.write(text)
+
+    def build_scss(self, app_name: str, scss_dir: Path, css_dir: Path):
+        from govuk_template_base.management.commands.buildscss import Compiler
+
+        try:
+            compiler = Compiler(govuk_template_app=app_name, govuk_template_source_path=scss_dir)
+            compiler.compile(scss_dir, css_dir)
+        except CommandError as e:
+            self.info_message(str(e), style_func=self.style.WARNING)
+
+    def cleanup(self):
         if self.paths_to_remove:
             self.debug_message('Cleaning up temporary files')
             for path_to_remove in self.paths_to_remove:
@@ -101,84 +146,3 @@ class Command(StartAppCommand):
                     os.remove(path_to_remove)
                 else:
                     shutil.rmtree(path_to_remove)
-
-    def load_govuk_template(self, version, static_dir: Path, templates_dir: Path):
-        self.info_message('Downloading `govuk_template` version %s' % version)
-        archive = self.download(
-            'https://github.com/alphagov/govuk_template/releases/download/v%s/django_govuk_template-%s.tgz' % (
-                version, version,
-            )
-        )
-        temporary_folder = Path(self.extract(archive))
-        self.copy_dir(temporary_folder / 'govuk_template' / 'static', static_dir)
-        self.copy_dir(temporary_folder / 'govuk_template' / 'templates' / 'govuk_template', templates_dir)
-
-        self.fix_templates(templates_dir)
-
-    def fix_templates(self, templates_dir: Path):
-        for path in templates_dir.rglob('*.html'):
-            with path.open('rt') as f:
-                text = f.read()
-            text = text.replace('{% load staticfiles %}', '{% load static %}')
-            with path.open('wt') as f:
-                f.write(text)
-
-    def load_govuk_elements(self, elements_version, frontend_toolkit_version, scss_dir: Path, js_dir: Path):
-        self.debug_message('Loading `govuk-elements-sass` package listing')
-        with open(self.download('https://registry.npmjs.org/govuk-elements-sass/')) as f:
-            elements_package = json.load(f)
-
-        try:
-            elements_dist = elements_package['versions'][elements_version]
-        except KeyError:
-            raise CommandError('`govuk-elements-sass` version %s not available, choose from: %s' % (
-                elements_version, ', '.join(elements_package['versions'].keys())
-            ))
-        try:
-            frontend_toolkit_dependency = elements_dist['dependencies']['govuk_frontend_toolkit']
-            self.info_message('Check that `govuk_frontend_toolkit` version "%s" is compatible '
-                              'with `govuk-elements-sass` dependency of "%s"' % (
-                                  frontend_toolkit_version, frontend_toolkit_dependency
-                              ))
-        except KeyError:
-            raise CommandError('`govuk_frontend_toolkit` dependency not found, is it no longer needed?')
-        other_dependencies = set(elements_dist.get('dependencies', {}).keys()) - {'govuk_frontend_toolkit'}
-        if other_dependencies:
-            self.stderr.write('`govuk-elements-sass` now has additional dependencies that are not handled: %s' % (
-                ', '.join(sorted(other_dependencies)),
-            ))
-        self.info_message('Downloading `govuk-elements-sass` version %s' % elements_version)
-        archive = self.download(elements_dist['dist']['tarball'])
-        temporary_folder = Path(self.extract(archive))
-        self.copy_dir(temporary_folder / 'public' / 'sass', scss_dir)
-
-        self.info_message('Downloading `govuk-elements` source version %s' % elements_version)
-        archive = self.download('https://github.com/alphagov/govuk_elements/archive/v%s.tar.gz' % elements_version)
-        temporary_folder = Path(self.extract(archive))
-        self.copy_dir(temporary_folder / 'assets' / 'javascripts', js_dir, ignore_paths=['redirect.js'])
-
-    def load_govuk_frontend_toolkit(self, frontend_toolkit_version, scss_dir: Path, js_dir: Path, images_dir: Path):
-        self.debug_message('Loading `govuk_frontend_toolkit` package listing')
-        with open(self.download('https://registry.npmjs.org/govuk_frontend_toolkit/')) as f:
-            frontend_toolkit_package = json.load(f)
-
-        try:
-            frontend_toolkit_dist = frontend_toolkit_package['versions'][frontend_toolkit_version]
-        except KeyError:
-            raise CommandError('`govuk_frontend_toolkit` version %s not available, choose from: %s' % (
-                frontend_toolkit_version, ', '.join(frontend_toolkit_package['versions'].keys())
-            ))
-        self.info_message('Downloading `govuk_frontend_toolkit` version %s' % frontend_toolkit_version)
-        archive = self.download(frontend_toolkit_dist['dist']['tarball'])
-        temporary_folder = Path(self.extract(archive))
-        self.copy_dir(temporary_folder / 'stylesheets', scss_dir)
-        self.copy_dir(temporary_folder / 'javascripts', js_dir)
-        self.copy_dir(temporary_folder / 'images', images_dir)
-
-    def build_scss(self, scss_dir: Path, css_dir: Path):
-        from govuk_template_base.management.commands.buildscss import compile_scss
-
-        try:
-            compile_scss(str(scss_dir), str(css_dir))
-        except CommandError as e:
-            self.info_message(str(e), style_func=self.style.WARNING)

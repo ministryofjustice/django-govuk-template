@@ -1,0 +1,8 @@
+from django.utils.translation import gettext_lazy as _
+from govuk_template_base.apps import BaseAppConfig
+
+
+class {{ camel_case_app_name }}Config(BaseAppConfig):
+    name = '{{ app_name }}'
+    verbose_name = _('GOV.UK Design System')
+    govuk_template = True  # required by `buildscss` to discover source path

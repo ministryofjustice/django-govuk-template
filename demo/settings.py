@@ -74,7 +74,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'govuk_template_base.context_processors.govuk_template_base',
+                'govuk_template.context_processors.govuk_template',
             ],
         },
     },

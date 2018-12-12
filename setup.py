@@ -19,7 +19,7 @@ setup_extensions = importlib.import_module('govuk_template_base.setup_extensions
 setup_requires = ['setuptools', 'pip', 'wheel']
 install_requires = ['django>=1.11']
 extras_require = {
-    'forms': ['django-govuk-forms'],
+    'forms': ['django-govuk-forms>=0.8'],
     'scss': ['libsass'],
     'watch': ['watchdog'],
 }
@@ -35,10 +35,10 @@ setup(
     packages=find_packages(exclude=['demo', 'tests']),
     include_package_data=True,
     license='MIT',
-    description='Django app that builds `template` and `elements` components from '
-                'the Government Digital Services style guide',
+    description='Eases development of Django-based services using '
+                'UK Government Digital Service’s design system',
     long_description=README,
-    keywords='django govuk template elements frontend toolkit',
+    keywords='django govuk design system template elements frontend toolkit',
     classifiers=[
         'Development Status :: 4 - Beta',
         'Framework :: Django',

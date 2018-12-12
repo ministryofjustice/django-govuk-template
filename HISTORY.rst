@@ -1,6 +1,11 @@
 Change log
 ==========
 
+In progress
+-----------
+
+* Update to use GDS design system
+
 0.8
 ---
 

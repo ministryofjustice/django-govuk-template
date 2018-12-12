@@ -30,10 +30,13 @@ class BaseServiceSettings:
     """
     name = 'Untitled service'
     localise_name = False
+    product_name = ''
+    localise_product_name = False
     phase = ServicePhase.discovery.name
     header_link_view_name = ''
     header_links = []
-    footer_links = []
+    footer_sections = []
+    meta_links = []
 
     def __str__(self):
         return self.name
@@ -41,6 +44,10 @@ class BaseServiceSettings:
     @property
     def localised_name(self):
         return gettext(self.name) if self.localise_name else self.name
+
+    @property
+    def localised_product_name(self):
+        return gettext(self.product_name) if self.localise_product_name else self.name
 
     @property
     def phase_name(self):
@@ -60,11 +67,38 @@ class BaseServiceSettings:
         return self.header_links
 
     @property
-    def has_footer_links(self):
-        return bool(self.footer_links)
+    def has_footer_sections(self):
+        return bool(self.footer_sections)
 
-    def get_footer_links(self):
-        return self.footer_links
+    def get_footer_sections(self):
+        return self.footer_sections
+
+    @property
+    def has_meta_links(self):
+        return bool(self.meta_links)
+
+    def get_meta_links(self):
+        return self.meta_links
+
+
+class BaseServiceLinkSection:
+    """
+    Provides the interface representing groups of footer links
+    """
+    name = ''
+    localise_name = False
+    columns = 1
+    links = []
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def localised_name(self):
+        return gettext(self.name) if self.localise_name else self.name
+
+    def get_links(self):
+        return self.links
 
 
 class BaseServiceLink:
@@ -90,22 +124,41 @@ class BaseServiceLink:
         return self.link
 
 
+def _convert_link_confs(link_confs):
+    links = []
+    for link_conf in link_confs:
+        link = BaseServiceLink()
+        for link_key, link_value in link_conf.items():
+            setattr(link, link_key, link_value)
+        links.append(link)
+    return links
+
+
 def default_settings():
     conf = getattr(settings, 'GOVUK_SERVICE_SETTINGS', {})
     if conf:
-        link_keys = {'header_links', 'footer_links'}
+        if isinstance(conf, BaseServiceSettings):
+            return conf
+
         service_settings = BaseServiceSettings()
         for settings_key, settings_value in conf.items():
-            if settings_key in link_keys:
-                links = []
-                for link_conf in settings_value:
-                    link = BaseServiceLink()
-                    for link_key, link_value in link_conf.items():
-                        setattr(link, link_key, link_value)
-                    links.append(link)
-                setattr(service_settings, settings_key, links)
+            if settings_key in {'header_links', 'meta_links'}:
+                setattr(service_settings, settings_key, _convert_link_confs(settings_value))
+            elif settings_key == 'footer_sections':
+                sections = []
+                for section_conf in settings_value:
+                    section = BaseServiceLinkSection()
+                    for section_key, section_value in section_conf.items():
+                        if section_key == 'links':
+                            section.links = _convert_link_confs(section_value)
+                        else:
+                            setattr(section, section_key, section_value)
+                    sections.append(section)
+                service_settings.footer_sections = sections
             else:
                 setattr(service_settings, settings_key, settings_value)
+
+        settings.GOVUK_SERVICE_SETTINGS = service_settings
         return service_settings
 
     from govuk_template_base.models import ServiceSettings

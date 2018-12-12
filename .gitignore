@@ -6,11 +6,11 @@ __pycache__/
 *.py[cod]
 
 # packaging
-*.egg-info/
-.eggs/
-build/
-dist/
+/*.egg-info/
+/.eggs/
+/build/
+/dist/
 
 # environments
-env/
-venv/
+/env/
+/venv/

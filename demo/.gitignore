@@ -1,3 +1,4 @@
-govuk_template/
-static/
+/demo_service/static/
+/govuk_template/
+/static/
 db.sqlite

@@ -1,6 +1,6 @@
-from django.apps import AppConfig
+from govuk_template_base.apps import BaseAppConfig
 
 
-class DemoAppConfig(AppConfig):
+class DemoAppConfig(BaseAppConfig):
     name = 'demo_service'
     verbose_name = 'Demo'

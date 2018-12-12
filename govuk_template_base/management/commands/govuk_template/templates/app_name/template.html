@@ -1,0 +1,76 @@
+{% load i18n %}
+{% load static %}
+{% load govuk_template_base %}
+
+{% get_service_settings as service_settings %}
+
+<!DOCTYPE html>
+<html lang="{{ html_lang|default:'en' }}" class="{{ html_classes }}">
+<head>
+    <meta charset="utf-8" />
+    <title>{% block page_title %}GOV.UK – {{ service_settings.localised_name }}{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="{{ theme_color }}" />
+
+    {% block head_icons %}
+        <link rel="shortcut icon" sizes="16x16 32x32 48x48" href="{% static '##app_name##/images/favicon.ico' %}" type="image/x-icon" />
+        <link rel="mask-icon" href="{% static '##app_name##/images/govuk-mask-icon.svg' %}" color="{{ theme_color }}" />
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static '##app_name##/images/govuk-apple-touch-icon-180x180.png' %}" />
+        <link rel="apple-touch-icon" sizes="167x167" href="{% static '##app_name##/images/govuk-apple-touch-icon-167x167.png' %}" />
+        <link rel="apple-touch-icon" sizes="152x152" href="{% static '##app_name##/images/govuk-apple-touch-icon-152x152.png' %}" />
+        <link rel="apple-touch-icon" href="{% static '##app_name##/images/govuk-apple-touch-icon.png' %}" />
+    {% endblock %}
+
+    {% block head %}
+        <!--[if !IE 8]><!-->
+        <link href="{% static '##app_name##/base.css' %}" rel="stylesheet" />
+        <style media="print">
+            .govuk-link[href^="/"]::after {
+                content: " ({{ request.scheme }}://{{ request.get_host }}" attr(href) ")";
+            }
+        </style>
+        <!--<![endif]-->
+        <!--[if IE 8]>
+        <script src="{% static '##app_name##/vendor/html5shiv.min.js' %}"></script>
+        <link href="{% static '##app_name##/base-ie8.css' %}" rel="stylesheet" />
+        <![endif]-->
+    {% endblock %}
+
+    <meta property="og:image" content="{% static '##app_name##/images/govuk-opengraph-image.png' %}" />
+</head>
+<body class="{{ body_classes }}">
+    <script>document.body.className = ((document.body.className) ? document.body.className + ' js-enabled' : 'js-enabled');</script>
+    {% block body_start %}{% endblock %}
+
+    {% block skip_link %}
+        <a href="#main-content" class="govuk-skip-link">
+            {% trans 'Skip to main content' %}
+        </a>
+    {% endblock %}
+
+    {% block header %}
+        {% include '##app_name##/components/header.html' %}
+    {% endblock %}
+
+    {% block main %}
+        <div class="govuk-width-container">
+            {% block before_content %}
+                {% include '##app_name##/components/phase-banner.html' with service_settings=service_settings %}
+            {% endblock %}
+
+            <main class="{{ main_classes }}" id="main-content" role="main">
+                {% block content %}{% endblock %}
+            </main>
+        </div>
+    {% endblock %}
+
+    {% block footer %}
+        {% include '##app_name##/components/footer.html' %}
+    {% endblock %}
+
+    {% block body_end %}
+        <script src="{% static '##app_name##/base.js' %}"></script>
+        <script>window.GOVUKFrontend.initAll()</script>
+    {% endblock %}
+</body>
+</html>

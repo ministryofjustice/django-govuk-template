@@ -8,11 +8,17 @@
       {% for page_index in page_range %}
         <li>
           {% if not page_index %}
-            …
+            <span aria-hidden="true">…</span>
           {% else %}
-            <a href="?{% if query_string %}{{ query_string }}&amp;{% endif %}page={{ page_index }}" {% if page == page_index %}class="govuk-page-list__current-page"{% endif %}>
+            <a href="?{% if query_string %}{{ query_string }}&amp;{% endif %}page={{ page_index }}" class="{% if page == page_index %}govuk-link--text-colour{% else %}govuk-link{% endif %}" {% if page == page_index %}aria-current="page"{% endif %}>
               {% if page_index != 1 %}
-                <span class="visually-hidden">{% trans 'Page' %} </span>
+                <span class="govuk-visually-hidden">
+                  {% if page == page_index %}
+                    {% trans 'Current page' %}
+                  {% else %}
+                    {% trans 'Page' %}
+                  {% endif %}
+                </span>
               {% endif %}
               <span>{{ page_index|separate_thousands }}</span>
             </a>
